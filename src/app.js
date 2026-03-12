@@ -7,6 +7,7 @@ import session from 'express-session';
 import './config/auth.config.js';
 import passport from 'passport';
 
+import { ensureAuth } from './controllers/auth.controller.js';
 import { prisma } from './lib/prisma.js';
 import filesRouter from './routes/files.router.js';
 import indexRouter from './routes/index.router.js';
@@ -38,7 +39,7 @@ app.use(
 app.use(passport.session());
 
 app.use('/', indexRouter);
-app.use('/files', filesRouter);
+app.use('/files', ensureAuth, filesRouter);
 app.use('/users', usersRouter);
 
 app.use((req, res) => res.status(404).render('404'));
