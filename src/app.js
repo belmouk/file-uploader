@@ -8,6 +8,9 @@ import './config/auth.config.js';
 import passport from 'passport';
 
 import { prisma } from './lib/prisma.js';
+import filesRouter from './routes/files.router.js';
+import indexRouter from './routes/index.router.js';
+import usersRouter from './routes/users.router.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -34,7 +37,16 @@ app.use(
 
 app.use(passport.session());
 
-app.get('/', (req, res) => res.send('Hello World!'));
+app.use('/', indexRouter);
+app.use('/files', filesRouter);
+app.use('/users', usersRouter);
+
+app.use((req, res) => res.status(404).render('404'));
+
+app.use((err, req, res, next) => {
+  console.log(err);
+  return res.status(500).send('Internal server error');
+});
 
 const PORT = process.env.PORT || 8000;
 
