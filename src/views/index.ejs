@@ -11,11 +11,8 @@
 
     <h1>File Uploader</h1>
     <% if (user) { %>
-      <form action="/files/store" method="POST" enctype="multipart/form-data"> 
-        <label id="file">File:</label>
-        <input type="file" id="file" name="file">
-        <button type="submit">Upload</button>
-      </form>
+      <h2>Welcome <%= user.name %></h2>
+      <a href="/folders">Go to folders</a>
     <% } else {%> 
     <section>
         <h2>Log-in</h1>

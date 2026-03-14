@@ -13,17 +13,44 @@ datasource db {
   provider = "postgresql"
 }
 
-model User{
+model User {
   id Int @id @default(autoincrement())
   username String @unique
   password String
+  folders Folder[]
   @@map("users")
 }
 
-model Session{
+model Session {
   id String @id
   sid String @unique
   data String
   expiresAt DateTime @map("expires_at")
   @@map("sessions")
+}
+
+model Folder {
+  id Int @id @default(autoincrement())
+  name String 
+  createdAt DateTime @default(now()) @map("created_at")
+  modifiedAt DateTime @default(now()) @map("modified_at")
+  files File[]
+  owner User @relation(fields: [ownerId], references: [id])
+  ownerId Int @map("owner_id")
+  parent Folder? @relation("FolderHierarchy",fields: [parentId], references: [id], onDelete: Cascade)
+  parentId Int? @map("parent_id")
+  children Folder[] @relation("FolderHierarchy")
+
+  @@unique([parentId, name])
+  @@map("folders")
+}
+
+model File {
+  id Int @id @default(autoincrement())
+  name String
+  createdAt DateTime @default(now()) @map("created_at")
+  modifiedAt DateTime @default(now()) @map("modified_at")
+  folder Folder @relation(fields: [folderId], references: [id], onDelete: Cascade)
+  folderId Int @map("folder_id")
+  @@map("files")
 }

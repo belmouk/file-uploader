@@ -9,7 +9,7 @@ export const authenticate = (req, res, next) => {
         .render('index', { errors: [{ msg: 'Incorrect username.' }], user: undefined });
     req.login(user, (err) => {
       if (err) return next(err);
-      res.redirect('/');
+      res.redirect('/folders');
     });
   })(req, res, next);
 };

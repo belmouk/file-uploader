@@ -5,13 +5,14 @@ import { prisma } from '../lib/prisma.js';
 export const store = async (req, res, next) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    await prisma.user.create({
+    const owner = await prisma.user.create({
       data: {
         username: req.body.username,
         password: hashedPassword,
       },
     });
-    return res.redirect('/log-in');
+    req.owner = owner;
+    next();
   } catch (error) {
     return next(error);
   }

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= folder.name %></title>
+  </head>
+  <body>
+    <%- include("partials/_nav") %>
+    <h1><%= folder.name %></h1>
+    <section>
+      <h2><%= cwd %></h2>
+      <a href="/folders/<%= parent.id %>">Go back</a>
+      <a href="/folders/create/<%= folder.id %>">Create Folder</a>
+      <% if (folder.files.length === 0 && folder.children.length === 0) { %>
+      <p>Empty folder.</p>
+      <% } else { %>
+
+      <% if (folder.children.length > 0 ) { %>
+      <ul>
+        <% folder.children.forEach(subFolder => { %>
+        <li>
+          <a href="/folders/<%= subFolder.id %>"><%= subFolder.name %></a>
+          <ul>
+            <li>
+              <form action="/folders/delete/<%= subFolder.id %>" method="POST">
+                <button type="submit">Delete</button>
+              </form>
+            </li>
+            <li>
+              <button type="button">
+                <a href="/folders/edit/<%= subFolder.id %>">Edit</a>
+              </button>
+            </li>
+          </ul>
+        </li>
+        <% }) %>
+      </ul>
+      <% } %>
+
+      <% if (folder.files.length > 0) { %>
+      <ul>
+        <% folder.files.forEach(file => { %>
+        <li><%= file.name %></li>
+        <% }) %>
+      </ul>
+      <% } %>
+      <% }%>
+    </section>
+    <section>
+      <h3>Add file</h3>
+      <form action="/files/store/<%= folder.id %>" method="POST" enctype="multipart/form-data">
+        <label for="file">File:</label>
+        <input type="file" id="file" name="file" />
+        <button type="submit">Upload</button>
+      </form>
+    </section>
+  </body>
+</html>

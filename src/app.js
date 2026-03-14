@@ -10,6 +10,7 @@ import passport from 'passport';
 import { ensureAuth } from './controllers/auth.controller.js';
 import { prisma } from './lib/prisma.js';
 import filesRouter from './routes/files.router.js';
+import foldersRouter from './routes/folders.router.js';
 import indexRouter from './routes/index.router.js';
 import usersRouter from './routes/users.router.js';
 
@@ -41,6 +42,7 @@ app.use(passport.session());
 app.use('/', indexRouter);
 app.use('/files', ensureAuth, filesRouter);
 app.use('/users', usersRouter);
+app.use('/folders', ensureAuth, foldersRouter);
 
 app.use((req, res) => res.status(404).render('404'));
 
