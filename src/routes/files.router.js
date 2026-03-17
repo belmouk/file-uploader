@@ -21,4 +21,6 @@ router.post('/store/:folderId', upload.single('file'), filesController.store);
 
 router.get('/show/:id', filesController.show);
 
+router.get('/download/:id', filesController.download);
+
 export default router;

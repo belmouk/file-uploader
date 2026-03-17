@@ -41,7 +41,7 @@
       <% if (folder.files.length > 0) { %>
       <ul>
         <% folder.files.forEach(file => { %>
-        <li><%= file.name %></li>
+        <li><a href="/files/show/<%= file.id %>"><%= file.name %></a></li>
         <% }) %>
       </ul>
       <% } %>

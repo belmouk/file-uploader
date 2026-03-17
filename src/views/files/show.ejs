@@ -3,17 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><!= file.name !></title>
+    <title><%= file.name %></title>
   </head>
   <body>
     <h1><%= file.name %></h1>
-    <%-include("../partials/_nav") %>
+    <%- include("../partials/_nav") %>
     <ul>
       <li>
-        Size:
+        Size (kB):
         <%= file.size %>
       </li>
-      <li>Upload time: <%= file.createdAt</li>
+      <li>
+        Upload time:
+        <%= file.createdAt.toLocaleString() %>
+      </li>
     </ul>
+    <form action="/files/download/<%= file.id %>" method="GET">
+      <button type="submit">Download</button>
+    </form>
   </body>
 </html>

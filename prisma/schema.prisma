@@ -49,6 +49,7 @@ model File {
   id Int @id @default(autoincrement())
   name String
   size Int
+  path String @unique
   createdAt DateTime @default(now()) @map("created_at")
   modifiedAt DateTime @default(now()) @map("modified_at")
   folder Folder @relation(fields: [folderId], references: [id], onDelete: Cascade)
