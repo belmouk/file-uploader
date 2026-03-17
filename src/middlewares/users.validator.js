@@ -1,6 +1,8 @@
 import { body, matchedData, validationResult } from 'express-validator';
 
-export const userRules = [
+import { prisma } from '../lib/prisma.js';
+
+export const userSignUpRules = [
   body('username')
     .trim()
     .notEmpty()
@@ -10,13 +12,22 @@ export const userRules = [
     .withMessage('Invalid username: username must be below 50 characters.')
     .bail()
     .isAlphanumeric()
-    .withMessage('Invalid username: username must be alphanumeric.'),
+    .withMessage('Invalid username: username must be alphanumeric.')
+    .custom(async (input) => {
+      const username = await prisma.user.findUnique({ where: { username: input } });
+      if (username) throw new Error('Username already exists.');
+    }),
   body('password')
     .notEmpty()
     .withMessage('Please enter your password.')
     .bail()
     .isLength({ max: 8 })
     .withMessage('Invalid password. Password must be below 8 characters.'),
+];
+
+export const userLoginRules = [
+  body('username').trim().notEmpty().withMessage('Please enter your username.'),
+  body('password').notEmpty().withMessage('Please enter your password.'),
 ];
 
 export const handleUserValidation = (view) => {

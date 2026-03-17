@@ -22,6 +22,6 @@ export const signUp = (req, res) => {
   if (req.user) {
     return res.redirect('/');
   } else {
-    res.render('sign-up', { errors: [] });
+    res.render('users/sign-up', { errors: [] });
   }
 };

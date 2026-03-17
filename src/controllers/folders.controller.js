@@ -5,7 +5,6 @@ export const createRoot = async (req, res, next) => {
     await prisma.folder.create({
       data: {
         name: 'root',
-        parentId: null,
         owner: { connect: { id: req.owner.id } },
       },
     });
@@ -44,7 +43,7 @@ export const index = async (req, res, next) => {
     const cwd = await getCwd(folder);
     const parent = folder.parent || folder;
 
-    return res.render('storage', {
+    return res.render('folders/storage', {
       cwd,
       folder,
       parent,
@@ -95,12 +94,12 @@ export const update = async (req, res, next) => {
 export const edit = async (req, res, next) => {
   try {
     const folder = await prisma.folder.findUnique({ where: { id: parseInt(req.params.id) } });
-    return res.render('edit', { folder, errors: [] });
+    return res.render('folders/edit', { folder, errors: [] });
   } catch (error) {
     next(error);
   }
 };
 
 export const create = async (req, res, next) => {
-  return res.render('create', { errors: [], parentId: req.params.parentId });
+  return res.render('folders/create', { errors: [], parentId: req.params.parentId });
 };
